@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Trang trắng có thanh cuộn</title>
+  <title>Blank page with scroll</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   
   <!-- Dropdown nhỏ góc trái -->
   <div class="dropdown-box">
-    <button class="dropdown-btn" onclick="toggleDropdown()">Defined by ▼</button>
+    <button class="dropdown-btn" onclick="toggleDropdown(event)">Defined by ▼</button>
     <div class="dropdown-menu" id="dropdownMenu">
       <div class="option">Karnaugh map</div>
       <div class="option">Minterm</div>
@@ -24,17 +24,17 @@
   </div>
 
   <script>
-    function toggleDropdown() {
+    function toggleDropdown(e) {
+      e.stopPropagation(); // ⭐ Ngăn sự kiện lan ra ngoài
       document.getElementById("dropdownMenu").classList.toggle("show");
     }
 
     // Ẩn dropdown khi click ra ngoài
-    window.addEventListener("click", function(e) {
-      if (!e.target.matches('.dropdown-btn')) {
-        document.getElementById("dropdownMenu").classList.remove("show");
-      }
+    window.addEventListener("click", function() {
+      document.getElementById("dropdownMenu").classList.remove("show");
     });
   </script>
 
 </body>
 </html>
+
