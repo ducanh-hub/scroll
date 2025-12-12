@@ -41,3 +41,52 @@ body {
   scrollbar-width: thin;
   scrollbar-color: rgba(0,0,0,0.15) transparent;
 }
+/* --- Dropdown góc trái --- */
+
+.dropdown-box {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 1000;
+}
+
+.dropdown-btn {
+  background: #cfe4ff;          /* xanh dương nhạt */
+  color: #003b7a;               /* xanh đậm */
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.dropdown-btn:hover {
+  background: #b7d6ff;
+}
+
+.dropdown-menu {
+  display: none;
+  margin-top: 6px;
+  background: white;
+  border: 1px solid #d0d0d0;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  overflow: hidden;
+  width: 160px;
+}
+
+.dropdown-menu .option {
+  padding: 10px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.dropdown-menu .option:hover {
+  background: #f0f7ff;
+}
+
+/* Hiện dropdown */
+.show {
+  display: block;
+}
+
