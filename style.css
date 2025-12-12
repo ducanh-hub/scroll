@@ -1,11 +1,16 @@
-/* Reset */
-html, body {
+html {
   margin: 0;
   padding: 0;
   height: 100%;
-  background: white; /* trang trắng */
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: white;
   font-family: Arial, sans-serif;
-  overflow-y: scroll; 
+  overflow-y: scroll;   /* Thanh cuộn luôn xuất hiện */
 }
 
 /* Container chính để cho đẹp */
