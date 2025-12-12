@@ -5,6 +5,7 @@ html, body {
   height: 100%;
   background: white; /* trang trắng */
   font-family: Arial, sans-serif;
+  overflow-y: scroll; 
 }
 
 /* Container chính để cho đẹp */
