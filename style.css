@@ -1,17 +1,33 @@
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+/* Tạo thanh cuộn cho toàn trang */
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  overflow-y: scroll;
+  font-family: Arial, sans-serif;
 }
 
-::-webkit-scrollbar-track {
-  background: transparent;
+/* Nội dung cho đẹp */
+.container {
+  padding: 20px;
+  line-height: 1.7;
 }
 
-::-webkit-scrollbar-thumb {
-  background: #b3b3b3;
-  border-radius: 10px;
+/* Tùy chọn: làm thanh cuộn giống ChatGPT (Chrome) */
+body::-webkit-scrollbar {
+  width: 8px;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: #8d8d8d;
+body::-webkit-scrollbar-track {
+  background: #f0f0f0;
 }
+
+body::-webkit-scrollbar-thumb {
+  background: #bfbfbf;
+  border-radius: 4px;
+}
+
+body::-webkit-scrollbar-thumb:hover {
+  background: #a0a0a0;
+}
+
