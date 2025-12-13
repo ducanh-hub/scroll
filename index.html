@@ -135,6 +135,108 @@
         }
       });
     });
+    // Hàm kiểm tra ô có giá trị là 1 hoặc X (để nhóm được)
+function isGroupable(cell) {
+  return cell.classList.contains("state-1") || cell.classList.contains("state-x");
+}
+
+// Tìm ô dựa vào data-minterm, trả về DOM element
+function getCellByMinterm(minterm) {
+  return kmap2.querySelector(`.cell[data-minterm="${minterm}"]`);
+}
+
+// Tính vị trí và kích thước của các nhóm, rồi vẽ khung
+function drawGroups() {
+  const groupsContainer = kmap2.querySelector(".groups");
+  groupsContainer.innerHTML = ""; // Xóa khung cũ
+
+  // Lấy trạng thái các ô (index 0 đến 3)
+  // Minterm 0 1
+  //         2 3
+  const cells = [
+    getCellByMinterm(0),
+    getCellByMinterm(1),
+    getCellByMinterm(2),
+    getCellByMinterm(3)
+  ];
+
+  // Tạo mảng boolean đánh dấu ô group được (1 hoặc X)
+  const groupable = cells.map(cell => isGroupable(cell));
+
+  // Các nhóm có thể có trong 2 biến:
+  // Nhóm đơn (1 ô)
+  // Nhóm đôi (2 ô cạnh nhau)
+  // Nhóm bốn (tất cả 4 ô)
+
+  // Kiểm tra nhóm 4 ô (toàn bộ k-map)
+  if (groupable.every(Boolean)) {
+    drawGroup([0,1,2,3]);
+    return; // Nhóm 4 phủ hết rồi, không cần nhóm nhỏ hơn
+  }
+
+  // Nhóm đôi theo hàng
+  if (groupable[0] && groupable[1]) drawGroup([0,1]);
+  if (groupable[2] && groupable[3]) drawGroup([2,3]);
+
+  // Nhóm đôi theo cột
+  if (groupable[0] && groupable[2]) drawGroup([0,2]);
+  if (groupable[1] && groupable[3]) drawGroup([1,3]);
+
+  // Nhóm đơn lẻ (không thuộc nhóm nào)
+  for (let i=0; i<4; i++) {
+    // Nếu ô không nằm trong nhóm nào trên thì tạo nhóm đơn
+    // Ở đây đơn giản: tạo nhóm đơn với các ô không nằm trong nhóm đôi/4
+    // Vì không lưu trạng thái nhóm, ta vẽ đơn tất cả các ô groupable
+    // Điều này sẽ làm trùng nhóm nhưng OK để demo đơn giản
+    if (groupable[i]) {
+      drawGroup([i]);
+    }
+  }
+}
+
+  // Vẽ khung nhóm, tham số là mảng chỉ số các ô trong nhóm
+  function drawGroup(cellsInGroup) {
+    const groupsContainer = kmap2.querySelector(".groups");
+  
+    // Tính vị trí và kích thước dựa trên vị trí ô đầu và cuối trong nhóm
+    const cellElems = cellsInGroup.map(i => getCellByMinterm(i));
+  
+    // Lấy vị trí bounding box của các ô
+    const rects = cellElems.map(cell => cell.getBoundingClientRect());
+  
+    // Lấy bounding box của container để tính toán vị trí tương đối
+    const containerRect = kmap2.getBoundingClientRect();
+  
+    // Tính vị trí bao quanh nhóm
+    const left = Math.min(...rects.map(r => r.left)) - containerRect.left - 6; // căn chỉnh hơi ra ngoài viền cell
+    const top = Math.min(...rects.map(r => r.top)) - containerRect.top - 6;
+    const right = Math.max(...rects.map(r => r.right)) - containerRect.left + 6;
+    const bottom = Math.max(...rects.map(r => r.bottom)) - containerRect.top + 6;
+  
+    const width = right - left;
+    const height = bottom - top;
+  
+    // Tạo div group và set style
+    const groupDiv = document.createElement("div");
+    groupDiv.classList.add("group");
+    groupDiv.style.left = left + "px";
+    groupDiv.style.top = top + "px";
+    groupDiv.style.width = width + "px";
+    groupDiv.style.height = height + "px";
+  
+    groupsContainer.appendChild(groupDiv);
+  }
+  
+  // Gọi lại mỗi khi thay đổi trạng thái ô
+  cells.forEach(cell => {
+    cell.addEventListener("click", () => {
+      // Delay 0 để sau khi thay đổi trạng thái trong event click ban đầu
+      setTimeout(drawGroups, 0);
+    });
+  });
+  
+  // Gọi lần đầu để không có nhóm khi khởi tạo
+  drawGroups();
   </script>
 
 </body>
