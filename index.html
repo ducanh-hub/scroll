@@ -66,8 +66,11 @@
     // Chọn option trong Defined by
     definedByMenu.querySelectorAll(".option").forEach(option => {
       option.addEventListener("click", () => {
-        definedByBtn.innerText = option.innerText + " ▼";
+        // Không thay đổi innerText nữa
         definedByMenu.classList.remove("show");
+        
+        // Nếu muốn xử lý logic gì khi chọn option
+        console.log("Selected Defined by:", option.innerText);
       });
     });
 
