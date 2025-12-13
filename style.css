@@ -218,4 +218,10 @@ body {
 .hidden {
   display: none;
 }
+.group-alt {
+  border-color: deepskyblue;          /* màu viền nhóm thứ 2 */
+  background: rgba(0,191,255,0.15);   /* màu nền transparent */
+  z-index: 2;                          /* để vẽ đè nhóm cũ */
+}
+
 
