@@ -151,3 +151,68 @@ body {
 .show {
   display: block;
 }
+.kmap {
+  position: relative;
+  margin-top: 80px;
+  margin-left: 10px;
+  width: 260px;
+  display: grid;
+  grid-template-rows: auto repeat(2, 60px);
+  gap: 6px;
+}
+.kmap-header {
+  display: grid;
+  grid-template-columns: 60px repeat(2, 1fr);
+  font-weight: bold;
+  text-align: center;
+}
+
+.kmap-row {
+  display: grid;
+  grid-template-columns: 60px repeat(2, 1fr);
+}
+
+.row-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+.cell {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  cursor: pointer;
+  user-select: none;
+}
+.state-0 {
+  color: #555;
+}
+
+.state-1 {
+  color: #2563eb;
+  font-weight: bold;
+}
+
+.state-x {
+  color: #999;
+  font-style: italic;
+}
+.groups {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.group {
+  position: absolute;
+  border: 3px solid orange;
+  border-radius: 14px;
+}
+.hidden {
+  display: none;
+}
+
