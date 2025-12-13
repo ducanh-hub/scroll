@@ -33,6 +33,31 @@
     window.addEventListener("click", function() {
       document.getElementById("dropdownMenu").classList.remove("show");
     });
+    <script>
+  const varSelected = document.getElementById("varSelected");
+  const varMenu = document.getElementById("varMenu");
+
+  function toggleVarDropdown(e) {
+    e.stopPropagation();
+    varMenu.classList.toggle("show");
+  }
+
+  document.querySelectorAll(".var-option").forEach(option => {
+    option.addEventListener("click", () => {
+      varSelected.innerText = option.innerText + " ▼";
+      varMenu.classList.remove("show");
+
+      // 👉 Sau này bạn có thể xử lý logic theo số biến ở đây
+      console.log("Selected:", option.innerText);
+    });
+  });
+
+  // Click ra ngoài thì đóng
+  window.addEventListener("click", () => {
+    varMenu.classList.remove("show");
+  });
+</script>
+
   </script>
 
   <!-- Variables dropdown -->
