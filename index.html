@@ -108,6 +108,33 @@
       definedByMenu.classList.remove("show");
       varMenu.classList.remove("show");
     });
+    // ===== K-map cell state: 0 → 1 → X → 0 =====
+    const cells = document.querySelectorAll("#kmap2 .cell");
+    
+    cells.forEach(cell => {
+      cell.addEventListener("click", (e) => {
+        e.stopPropagation(); // tránh click làm đóng dropdown
+    
+        if (cell.classList.contains("state-0")) {
+          // 0 → 1
+          cell.classList.remove("state-0");
+          cell.classList.add("state-1");
+          cell.textContent = "1";
+    
+        } else if (cell.classList.contains("state-1")) {
+          // 1 → X
+          cell.classList.remove("state-1");
+          cell.classList.add("state-x");
+          cell.textContent = "X";
+    
+        } else {
+          // X → 0
+          cell.classList.remove("state-x");
+          cell.classList.add("state-0");
+          cell.textContent = "0";
+        }
+      });
+    });
   </script>
 
 </body>
