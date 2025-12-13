@@ -22,22 +22,18 @@ body {
 }
 
 /* custom scrollbar giống kiểu ChatGPT */
-
 body::-webkit-scrollbar {
   width: 12px;
 }
-
 body::-webkit-scrollbar-track {
   background: transparent;
 }
-
 body::-webkit-scrollbar-thumb {
   background: rgba(0, 0, 0, 0.15);
   border-radius: 10px;
   border: 3px solid transparent;
   background-clip: padding-box;
 }
-
 body::-webkit-scrollbar-thumb:hover {
   background: rgba(0, 0, 0, 0.25);
 }
@@ -49,7 +45,6 @@ body {
 }
 
 /* --- Dropdown góc trái --- */
-
 .dropdown-box {
   position: fixed;
   top: 10px;
@@ -80,7 +75,7 @@ body {
 
 .var-selected {
   background: #ffe6c2;          /* màu nền Variables */
-  color: #ff6600;                  /* màu chữ Variables */
+  color: #ff6600;               /* màu chữ Variables */
   border: 1px solid #cfcfcf;
 }
 
@@ -90,9 +85,6 @@ body {
 
 .dropdown-menu {
   display: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
   margin-top: 6px;
   background: white;
   border: 1px solid #d0d0d0;
@@ -112,15 +104,18 @@ body {
   background: #f0f7ff;
 }
 
-/* --- Variables dropdown --- */
+/* Hiện dropdown */
+.show {
+  display: block;
+}
 
+/* --- Variables dropdown --- */
 .var-box {
   position: fixed;
   top: 10px;     /* nằm DƯỚI Defined by */
   left: 125px;
   z-index: 1000;
 }
-
 
 .var-menu {
   display: none;
@@ -151,77 +146,3 @@ body {
 .show {
   display: block;
 }
-.kmap {
-  position: relative;
-  margin-top: 80px;
-  margin-left: 10px;
-  width: 260px;
-  display: grid;
-  grid-template-rows: auto repeat(2, 60px);
-  gap: 6px;
-}
-.kmap-header {
-  display: grid;
-  grid-template-columns: 60px repeat(2, 1fr);
-  font-weight: bold;
-  text-align: center;
-}
-
-.kmap-row {
-  display: grid;
-  grid-template-columns: 60px repeat(2, 1fr);
-}
-
-.row-label {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-}
-.cell {
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 22px;
-  cursor: pointer;
-  user-select: none;
-}
-.state-0 {
-  color: #555;
-}
-
-.state-1 {
-  color: #2563eb;
-  font-weight: bold;
-}
-
-.state-x {
-  color: #999;
-  font-style: italic;
-}
-.groups {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-.group {
-  position: absolute;
-  border: 3px solid orange;
-  border-radius: 14px;
-  pointer-events: none; /* không chặn sự kiện chuột */
-  box-shadow: 0 0 8px 3px rgba(255, 165, 0, 0.5);
-  transition: all 0.3s ease;
-}
-.hidden {
-  display: none;
-}
-.group-alt {
-  border-color: deepskyblue;          /* màu viền nhóm thứ 2 */
-  background: rgba(0,191,255,0.15);   /* màu nền transparent */
-  z-index: 2;                          /* để vẽ đè nhóm cũ */
-}
-
-
