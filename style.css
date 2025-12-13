@@ -144,5 +144,13 @@ body {
 .var-menu.show {
   display: block;
 }
+/* Vị trí dropdown variables */
+.var-box {
+  position: fixed;
+  top: 52px;     /* nằm DƯỚI Defined by */
+  left: 10px;
+  z-index: 1000;
+}
+
 
 
