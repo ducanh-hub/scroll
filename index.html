@@ -75,10 +75,16 @@
     });
 
     // Chọn option trong Variables
-    varMenu.querySelectorAll(".var-option").forEach(option => {
+    definedByMenu.querySelectorAll(".option").forEach(option => {
       option.addEventListener("click", () => {
-        varSelected.innerText = option.innerText + " ▼";
-        varMenu.classList.remove("show");
+        // ❌ Không thay đổi innerText nữa
+        // definedByBtn.innerText = option.innerText + " ▼"; // Xóa hoặc comment dòng này
+    
+        // Chỉ đóng menu
+        definedByMenu.classList.remove("show");
+    
+        // Logic xử lý lựa chọn vẫn dùng được
+        console.log("Selected Defined by:", option.innerText);
       });
     });
 
