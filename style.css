@@ -96,3 +96,55 @@ body {
 .show {
   display: block;
 }
+/* --- Variables dropdown --- */
+
+.var-box {
+  position: fixed;
+  top: 52px;     /* nằm DƯỚI Defined by */
+  left: 10px;
+  z-index: 1000;
+}
+
+.var-selected {
+  background: #f3f3f3;
+  border: 1px solid #cfcfcf;
+  border-radius: 6px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 14px;
+  user-select: none;
+}
+
+.var-selected:hover {
+  background: #e9e9e9;
+}
+
+.var-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 140px;
+  margin-top: 4px;
+  background: white;
+  border: 1px solid #cfcfcf;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  overflow: hidden;
+  z-index: 100;
+}
+
+.var-option {
+  padding: 8px 10px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.var-option:hover {
+  background: #f0f7ff;
+}
+
+/* Hiện dropdown */
+.show {
+  display: block;
+}
