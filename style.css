@@ -100,8 +100,8 @@ body {
 
 .var-box {
   position: fixed;
-  top: 52px;     /* nằm DƯỚI Defined by */
-  left: 10px;
+  top: 10px;     /* nằm DƯỚI Defined by */
+  left: 160px;
   z-index: 1000;
 }
 
@@ -148,17 +148,3 @@ body {
 .show {
   display: block;
 }
-.dropdown-box {
-  position: fixed;
-  top: 10px;
-  left: 10px;
-  z-index: 1000;
-}
-
-.var-box {
-  position: fixed;
-  top: 10px;      /* Cùng top với dropdown-box để nằm ngang */
-  left: 160px;    /* Cách dropdown-box 150px + 10px margin, điều chỉnh theo chiều rộng nút */
-  z-index: 1000;
-}
-
