@@ -10,8 +10,8 @@
   
   <!-- Dropdown nhỏ góc trái -->
   <div class="dropdown-box">
-    <button class="dropdown-btn" onclick="toggleDropdown(event)">Defined by ▼</button>
-    <div class="dropdown-menu" id="dropdownMenu">
+    <button class="dropdown-btn" id="definedByBtn">Defined by ▼</button>
+    <div class="dropdown-menu" id="definedByMenu">
       <div class="option">Karnaugh map</div>
       <div class="option">Minterm</div>
       <div class="option">Maxterm</div>
@@ -19,21 +19,73 @@
       <div class="option">Truth Table</div>
     </div>
   </div>
+
+  <!-- Dropdown variables -->
+  <div class="var-box">
+    <button class="var-selected" id="varSelected">4 variables ▼</button>
+    <div class="var-menu" id="varMenu">
+      <div class="var-option">2 variables</div>
+      <div class="var-option">3 variables</div>
+      <div class="var-option">4 variables</div>
+      <div class="var-option">5 variables</div>
+      <div class="var-option">6 variables</div>
+    </div>
+  </div>
   
   <div class="container">
   </div>
 
   <script>
-    function toggleDropdown(e) {
-      e.stopPropagation(); // ⭐ Ngăn sự kiện lan ra ngoài
-      document.getElementById("dropdownMenu").classList.toggle("show");
-    }
+    // Các biến DOM
+    const definedByBtn = document.getElementById("definedByBtn");
+    const definedByMenu = document.getElementById("definedByMenu");
 
-    // Ẩn dropdown khi click ra ngoài
-    window.addEventListener("click", function() {
-      document.getElementById("dropdownMenu").classList.remove("show");
+    const varSelected = document.getElementById("varSelected");
+    const varMenu = document.getElementById("varMenu");
+
+    // Toggle dropdown Defined by
+    definedByBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      // Nếu varMenu đang mở thì đóng
+      if (varMenu.classList.contains("show")) {
+        varMenu.classList.remove("show");
+      }
+      definedByMenu.classList.toggle("show");
+    });
+
+    // Toggle dropdown Variables
+    varSelected.addEventListener("click", (e) => {
+      e.stopPropagation();
+      // Nếu definedByMenu đang mở thì đóng
+      if (definedByMenu.classList.contains("show")) {
+        definedByMenu.classList.remove("show");
+      }
+      varMenu.classList.toggle("show");
+    });
+
+    // Chọn option trong Defined by
+    definedByMenu.querySelectorAll(".option").forEach(option => {
+      option.addEventListener("click", () => {
+        definedByBtn.innerText = option.innerText + " ▼";
+        definedByMenu.classList.remove("show");
+      });
+    });
+
+    // Chọn option trong Variables
+    varMenu.querySelectorAll(".var-option").forEach(option => {
+      option.addEventListener("click", () => {
+        varSelected.innerText = option.innerText + " ▼";
+        varMenu.classList.remove("show");
+      });
+    });
+
+    // Click ra ngoài đóng tất cả dropdown
+    window.addEventListener("click", () => {
+      definedByMenu.classList.remove("show");
+      varMenu.classList.remove("show");
     });
   </script>
 
 </body>
 </html>
+
