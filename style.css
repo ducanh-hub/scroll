@@ -151,6 +151,13 @@ body {
   left: 10px;
   z-index: 1000;
 }
+.var-selected {
+  background: #cfe4ff;
+  color: #003b7a;
+}
+.var-selected:hover {
+  background: #b7d6ff;
+}
 
 
 
