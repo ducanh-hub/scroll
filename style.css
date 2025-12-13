@@ -101,7 +101,7 @@ body {
 .var-box {
   position: fixed;
   top: 10px;     /* nằm DƯỚI Defined by */
-  left: 160px;
+  left: 120px;
   z-index: 1000;
 }
 
