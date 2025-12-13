@@ -79,13 +79,13 @@ body {
 }
 
 .var-selected {
-  background: #ffd8a6;          /* màu nền Variables */
-  color: #663300;                  /* màu chữ Variables */
+  background: #ffe6c2;          /* màu nền Variables */
+  color: #ff6600;                  /* màu chữ Variables */
   border: 1px solid #cfcfcf;
 }
 
 .var-selected:hover {
-  background: #ffc888;
+  background: #ffd1a3;
 }
 
 .dropdown-menu {
