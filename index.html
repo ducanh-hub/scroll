@@ -60,6 +60,7 @@
 
   
   <script>
+    const kmap2 = document.getElementById("kmap2");
     const definedByBtn = document.getElementById("definedByBtn");
     const definedByMenu = document.getElementById("definedByMenu");
     const varSelected = document.getElementById("varSelected");
@@ -89,8 +90,17 @@
 
     varMenu.querySelectorAll(".var-option").forEach(option => {
       option.addEventListener("click", () => {
-        varSelected.innerText = option.innerText + " ▼";
+        const value = option.innerText;
+    
+        varSelected.innerText = value + " ▼";
         varMenu.classList.remove("show");
+    
+        // 👉 HIỆN / ẨN K-map 2 variables
+        if (value === "2 variables") {
+          kmap2.classList.remove("hidden");
+        } else {
+          kmap2.classList.add("hidden");
+        }
       });
     });
 
