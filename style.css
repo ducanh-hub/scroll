@@ -112,10 +112,6 @@ body {
   background: #f0f7ff;
 }
 
-/* Hiện dropdown */
-.show {
-  display: block;
-}
 /* --- Variables dropdown --- */
 
 .var-box {
