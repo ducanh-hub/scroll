@@ -211,6 +211,9 @@ body {
   position: absolute;
   border: 3px solid orange;
   border-radius: 14px;
+  pointer-events: none; /* không chặn sự kiện chuột */
+  box-shadow: 0 0 8px 3px rgba(255, 165, 0, 0.5);
+  transition: all 0.3s ease;
 }
 .hidden {
   display: none;
