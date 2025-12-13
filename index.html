@@ -59,7 +59,6 @@
 
     definedByMenu.querySelectorAll(".option").forEach(option => {
       option.addEventListener("click", () => {
-        definedByBtn.innerText = option.innerText + " ▼";
         definedByMenu.classList.remove("show");
       });
     });
