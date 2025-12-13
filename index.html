@@ -36,59 +36,41 @@
   </div>
 
   <script>
-    // Các biến DOM
     const definedByBtn = document.getElementById("definedByBtn");
     const definedByMenu = document.getElementById("definedByMenu");
-
     const varSelected = document.getElementById("varSelected");
     const varMenu = document.getElementById("varMenu");
 
-    // Toggle dropdown Defined by
     definedByBtn.addEventListener("click", (e) => {
       e.stopPropagation();
-      // Nếu varMenu đang mở thì đóng
       if (varMenu.classList.contains("show")) {
         varMenu.classList.remove("show");
       }
       definedByMenu.classList.toggle("show");
     });
 
-    // Toggle dropdown Variables
     varSelected.addEventListener("click", (e) => {
       e.stopPropagation();
-      // Nếu definedByMenu đang mở thì đóng
       if (definedByMenu.classList.contains("show")) {
         definedByMenu.classList.remove("show");
       }
       varMenu.classList.toggle("show");
     });
 
-    // Chọn option trong Defined by
     definedByMenu.querySelectorAll(".option").forEach(option => {
       option.addEventListener("click", () => {
-        // Không thay đổi innerText nữa
+        definedByBtn.innerText = option.innerText + " ▼";
         definedByMenu.classList.remove("show");
-        
-        // Nếu muốn xử lý logic gì khi chọn option
-        console.log("Selected Defined by:", option.innerText);
       });
     });
 
-    // Chọn option trong Variables
-    definedByMenu.querySelectorAll(".option").forEach(option => {
+    varMenu.querySelectorAll(".var-option").forEach(option => {
       option.addEventListener("click", () => {
-        // ❌ Không thay đổi innerText nữa
-        // definedByBtn.innerText = option.innerText + " ▼"; // Xóa hoặc comment dòng này
-    
-        // Chỉ đóng menu
-        definedByMenu.classList.remove("show");
-    
-        // Logic xử lý lựa chọn vẫn dùng được
-        console.log("Selected Defined by:", option.innerText);
+        varSelected.innerText = option.innerText + " ▼";
+        varMenu.classList.remove("show");
       });
     });
 
-    // Click ra ngoài đóng tất cả dropdown
     window.addEventListener("click", () => {
       definedByMenu.classList.remove("show");
       varMenu.classList.remove("show");
@@ -97,4 +79,3 @@
 
 </body>
 </html>
-
