@@ -7,10 +7,12 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  
-  <!-- Dropdown nhỏ góc trái -->
+
+  <!-- Dropdown Defined by -->
   <div class="dropdown-box">
-    <button class="dropdown-btn" onclick="toggleDropdown(event)">Defined by ▼</button>
+    <button class="dropdown-btn" id="definedBtn">
+      Defined by ▼
+    </button>
     <div class="dropdown-menu" id="dropdownMenu">
       <div class="option">Karnaugh map</div>
       <div class="option">Minterm</div>
@@ -19,63 +21,64 @@
       <div class="option">Truth Table</div>
     </div>
   </div>
-  
-  <div class="container">
+
+  <!-- Dropdown variables -->
+  <div class="var-box">
+    <div class="var-dropdown">
+      <div class="var-selected" id="varSelected">
+        4 variables ▼
+      </div>
+
+      <div class="var-menu" id="varMenu">
+        <div class="var-option">2 variables</div>
+        <div class="var-option">3 variables</div>
+        <div class="var-option">4 variables</div>
+        <div class="var-option">5 variables</div>
+        <div class="var-option">6 variables</div>
+      </div>
+    </div>
   </div>
 
+  <div class="container"></div>
+
+  <!-- ✅ JavaScript luôn đặt CUỐI BODY -->
   <script>
-    function toggleDropdown(e) {
-      e.stopPropagation(); // ⭐ Ngăn sự kiện lan ra ngoài
-      document.getElementById("dropdownMenu").classList.toggle("show");
-    }
+    /* ===== Defined by ===== */
+    const definedBtn = document.getElementById("definedBtn");
+    const dropdownMenu = document.getElementById("dropdownMenu");
 
-    // Ẩn dropdown khi click ra ngoài
-    window.addEventListener("click", function() {
-      document.getElementById("dropdownMenu").classList.remove("show");
+    definedBtn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      dropdownMenu.classList.toggle("show");
     });
-    <script>
-  const varSelected = document.getElementById("varSelected");
-  const varMenu = document.getElementById("varMenu");
 
-  function toggleVarDropdown(e) {
-    e.stopPropagation();
-    varMenu.classList.toggle("show");
-  }
+    /* ===== Variables ===== */
+    const varSelected = document.getElementById("varSelected");
+    const varMenu = document.getElementById("varMenu");
 
-  document.querySelectorAll(".var-option").forEach(option => {
-    option.addEventListener("click", () => {
-      varSelected.innerText = option.innerText + " ▼";
+    varSelected.addEventListener("click", function (e) {
+      e.stopPropagation();
+      varMenu.classList.toggle("show");
+    });
+
+    varMenu.addEventListener("click", function (e) {
+      e.stopPropagation();
+    });
+
+    document.querySelectorAll(".var-option").forEach(option => {
+      option.addEventListener("click", () => {
+        varSelected.innerText = option.innerText + " ▼";
+        varMenu.classList.remove("show");
+        console.log("Selected:", option.innerText);
+      });
+    });
+
+    /* ===== Click ngoài đóng tất cả ===== */
+    window.addEventListener("click", function () {
+      dropdownMenu.classList.remove("show");
       varMenu.classList.remove("show");
-
-      // 👉 Sau này bạn có thể xử lý logic theo số biến ở đây
-      console.log("Selected:", option.innerText);
     });
-  });
-
-  // Click ra ngoài thì đóng
-  window.addEventListener("click", () => {
-    varMenu.classList.remove("show");
-  });
-</script>
-
   </script>
-
-  <!-- Variables dropdown -->
-<div class="var-dropdown">
-  <div class="var-selected" id="varSelected" onclick="toggleVarDropdown(event)">
-    4 variables ▼
-  </div>
-
-  <div class="var-menu" id="varMenu">
-    <div class="var-option">2 variables</div>
-    <div class="var-option">3 variables</div>
-    <div class="var-option">4 variables</div>
-    <div class="var-option">5 variables</div>
-    <div class="var-option">6 variables</div>
-  </div>
-</div>
-
 
 </body>
 </html>
-
