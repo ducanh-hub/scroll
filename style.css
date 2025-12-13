@@ -79,8 +79,8 @@ body {
 }
 
 .var-selected {
-  background: #f3f3f3;          /* màu nền Variables */
-  color: #000;                  /* màu chữ Variables */
+  background: #ffd8a6;          /* màu nền Variables */
+  color: #663300;                  /* màu chữ Variables */
   border: 1px solid #cfcfcf;
 }
 
