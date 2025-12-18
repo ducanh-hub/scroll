@@ -208,6 +208,7 @@ body {
   padding: 20px;
   margin: 120px auto;
   border-radius: 6px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 
 .popup h3 {
