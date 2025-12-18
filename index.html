@@ -31,9 +31,9 @@
       <div class="var-option">6 variables</div>
     </div>
   </div>
+
   <!-- ===== Boolean Expression Workspace ===== -->
   <div class="expr-container">
-  
     <div class="expr-title">Boolean Expression</div>
   
     <div class="expr-row">
@@ -62,6 +62,8 @@
     </div>
   </div>
 
+  <!-- Thư viện simplify Boolean expression -->
+  <script src="https://cdn.jsdelivr.net/npm/boolean-expression-simplifier/dist/bundle.min.js"></script>
 
   <script>
     const definedByBtn = document.getElementById("definedByBtn");
@@ -102,7 +104,7 @@
         variableCount = parseInt(option.innerText);
         varSelected.innerText = option.innerText + " ▼";
         varMenu.classList.remove("show");
-        updateInstruction(); // 👈 CẬP NHẬT INSTRUCTION
+        updateInstruction(); // CẬP NHẬT INSTRUCTION
       });
     });
 
@@ -110,47 +112,58 @@
       definedByMenu.classList.remove("show");
       varMenu.classList.remove("show");
     });
+
     instructionBtn.addEventListener("click", (e) => {
       e.stopPropagation();
       popupOverlay.style.display =
         popupOverlay.style.display === "block" ? "none" : "block";
     });
-    
+
     // Click ra ngoài popup → đóng
     popupOverlay.addEventListener("click", () => {
       popupOverlay.style.display = "none";
     });
-    
+
     // Click vào popup → KHÔNG đóng
     popup.addEventListener("click", (e) => {
       e.stopPropagation();
     });
+
     const VARS = ["A", "B", "C", "D", "E", "F"];
     let variableCount = 4;
-    
+
     function updateInstruction() {
       const vars = VARS.slice(0, variableCount).join(", ");
     
       instructionContent.textContent = `
-    Allowed variables: ${vars}
-    
-    Operators:
-    +  : OR
-    *  : AND
-    '  : NOT
-    x  : XOR
-    ( ) : Group
-    
-    Invalid characters will be removed automatically.
-    `;
+Allowed variables: ${vars}
+
+Operators:
++  : OR
+*  : AND
+'  : NOT
+x  : XOR
+( ) : Group
+
+Invalid characters will be removed automatically.
+      `;
     }
-    
+
+    // Chuyển XOR (x) thành biểu thức chuẩn để thư viện simplify hiểu
+    function convertXORtoStandard(expr) {
+      let newExpr = expr;
+      const xorRegex = /([A-Z]) x ([A-Z])/g;
+      while (xorRegex.test(newExpr)) {
+        newExpr = newExpr.replace(xorRegex, "($1'*$2 + $1*$2')");
+      }
+      return newExpr;
+    }
+
     standardExpr.addEventListener("input", () => {
       const allowedVars = VARS.slice(0, variableCount);
       const allowedOps = ["+", "*", "'", "x", "(", ")", " "];
-    
+
       let cleaned = "";
-    
       for (let ch of standardExpr.value) {
         if (allowedVars.includes(ch)) {
           cleaned += ch;
@@ -158,30 +171,21 @@
           cleaned += ch;
         }
       }
-    
+
       if (cleaned !== standardExpr.value) {
         standardExpr.value = cleaned;
       }
-    
-      // Simplified tự động với thư viện
+
+      // Simplified tự động với thư viện, đã xử lý XOR
       try {
-        simplifiedExpr.value = BooleanExpressionSimplifier.simplify(cleaned);
+        const standardExprConverted = convertXORtoStandard(cleaned);
+        simplifiedExpr.value = BooleanExpressionSimplifier.simplify(standardExprConverted);
       } catch (e) {
         simplifiedExpr.value = cleaned; // nếu lỗi, giữ nguyên
       }
-      function simplifyBoolean(expr) {
-        // Loại bỏ khoảng trắng
-        let simplified = expr.replace(/\s+/g, "");
-    
-      // TODO: đây là chỗ tích hợp logic simplify nâng cao (K-map, Quine-McCluskey)
-      // Hiện tại tạm thời: giữ nguyên ký tự hợp lệ
-      return simplified;
-    }
+    });
 
     updateInstruction();
-    <!-- Thư viện simplify Boolean expression -->
-    <script src="https://cdn.jsdelivr.net/npm/boolean-expression-simplifier/dist/bundle.min.js"></script>
-
   </script>
 
 </body>
