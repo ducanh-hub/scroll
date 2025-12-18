@@ -1,27 +1,14 @@
-html {
+/* --- Reset cơ bản --- */
+html, body {
   margin: 0;
   padding: 0;
   height: 100%;
-}
-
-body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  background: white;
   font-family: Arial, sans-serif;
-  overflow-y: scroll;   /* Thanh cuộn luôn xuất hiện */
+  background: white;
+  overflow-y: scroll; /* Thanh cuộn luôn xuất hiện */
 }
 
-/* Container chính để cho đẹp */
-.container {
-  width: 90%;
-  max-width: 900px;
-  margin: auto;
-  padding: 20px;
-}
-
-/* custom scrollbar giống kiểu ChatGPT */
+/* --- Scrollbar tùy chỉnh (Chrome/Edge/Firefox) --- */
 body::-webkit-scrollbar {
   width: 12px;
 }
@@ -37,25 +24,24 @@ body::-webkit-scrollbar-thumb {
 body::-webkit-scrollbar-thumb:hover {
   background: rgba(0, 0, 0, 0.25);
 }
-
-/* Firefox */
 body {
   scrollbar-width: thin;
   scrollbar-color: rgba(0,0,0,0.15) transparent;
 }
 
 /* --- Dropdown góc trái --- */
-.dropdown-box {
+.dropdown-box, .var-box {
   position: fixed;
   top: 10px;
-  left: 10px;
   z-index: 1000;
 }
+.dropdown-box { left: 10px; }
+.var-box { left: 125px; }
 
 .dropdown-btn, .var-selected {
-  height: 36px;       /* Chiều cao nút */
-  line-height: 36px;  /* Căn chữ giữa theo chiều dọc */
-  padding: 0 12px;    /* Padding ngang, không ảnh hưởng chiều cao */
+  height: 36px;
+  line-height: 36px;
+  padding: 0 12px;
   box-sizing: border-box;
   border-radius: 6px;
   cursor: pointer;
@@ -64,81 +50,39 @@ body {
 }
 
 .dropdown-btn {
-  background: #cfe4ff;          /* màu nền Defined by */
-  color: #003b7a;               /* màu chữ Defined by */
+  background: #cfe4ff;
+  color: #003b7a;
   border: none;
 }
-
-.dropdown-btn:hover {
-  background: #b7d6ff;
-}
+.dropdown-btn:hover { background: #b7d6ff; }
 
 .var-selected {
-  background: #ffe6c2;          /* màu nền Variables */
-  color: #ff6600;               /* màu chữ Variables */
+  background: #ffe6c2;
+  color: #ff6600;
   border: 1px solid #cfcfcf;
 }
+.var-selected:hover { background: #ffd1a3; }
 
-.var-selected:hover {
-  background: #ffd1a3;
-}
-
-.dropdown-menu {
-  display: none;
-  margin-top: 6px;
-  background: white;
-  border: 1px solid #d0d0d0;
-  border-radius: 6px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-  overflow: hidden;
-  width: 160px;
-}
-
-.dropdown-menu .option {
-  padding: 10px;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.dropdown-menu .option:hover {
-  background: #f0f7ff;
-}
-
-/* Hiện dropdown */
-.show {
-  display: block;
-}
-
-/* --- Variables dropdown --- */
-.var-box {
-  position: fixed;
-  top: 10px;     /* nằm DƯỚI Defined by */
-  left: 125px;
-  z-index: 1000;
-}
-
-.var-menu {
+.dropdown-menu, .var-menu {
   display: none;
   position: absolute;
-  top: 100%;
-  left: 0;
-  width: 140px;
-  margin-top: 4px;
   background: white;
-  border: 1px solid #cfcfcf;
+  border: 1px solid #d0d0d0;
   border-radius: 6px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.15);
   overflow: hidden;
   z-index: 100;
 }
 
-.var-option {
+.dropdown-menu { width: 160px; margin-top: 6px; }
+.var-menu { width: 140px; margin-top: 4px; }
+
+.dropdown-menu .option, .var-menu .var-option {
   padding: 8px 10px;
   font-size: 14px;
   cursor: pointer;
 }
-
-.var-option:hover {
+.dropdown-menu .option:hover, .var-menu .var-option:hover {
   background: #f0f7ff;
 }
 
@@ -146,13 +90,16 @@ body {
 .show {
   display: block;
 }
+
 /* ===== Boolean Expression Area ===== */
 .expr-container {
-  width: 720px;
+  width: 90%;
+  max-width: 720px;
   margin: 90px auto;
   padding: 20px;
   border: 2px solid #2c2c2c;
   background: white;
+  box-sizing: border-box;
 }
 
 .expr-title {
@@ -166,23 +113,34 @@ body {
   display: flex;
   align-items: center;
   margin-bottom: 14px;
+  flex-wrap: wrap;
 }
 
 .expr-row label {
   width: 190px;
   font-size: 14px;
+  margin-bottom: 4px;
 }
 
-.expr-row input {
+.expr-row input, .expr-row textarea {
   flex: 1;
-  height: 34px;
   font-size: 14px;
-  padding: 4px 8px;
+  padding: 6px 8px;
   border: 1px solid #999;
+  border-radius: 4px;
+  box-sizing: border-box;
 }
 
-.expr-row input:disabled {
+.expr-row input:disabled, .expr-row textarea:disabled {
   background: #f4f4f4;
+}
+
+/* Nếu biểu thức dài, dùng textarea tự co dãn */
+.expr-row textarea {
+  width: 100%;
+  min-height: 34px;
+  resize: vertical;
+  font-family: monospace;
 }
 
 /* Instruction button */
@@ -204,7 +162,8 @@ body {
 
 .popup {
   background: white;
-  width: 420px;
+  width: 90%;
+  max-width: 420px;
   padding: 20px;
   margin: 120px auto;
   border-radius: 6px;
@@ -220,5 +179,5 @@ body {
   background: #f7f7f7;
   padding: 10px;
   border-radius: 4px;
+  overflow-x: auto;
 }
-
