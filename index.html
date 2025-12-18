@@ -5,12 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Boolean Expression Simplifier</title>
   <link rel="stylesheet" href="style.css" />
-
-  <!-- ❌ BỎ thư viện cũ -->
-  <!-- <script src="https://cdn.jsdelivr.net/npm/boolean-expression-simplifier/dist/bundle.min.js" defer></script> -->
-
-  <!-- ✅ THƯ VIỆN RÚT GỌN ĐÚNG -->
-  <script src="https://unpkg.com/logic-solver/dist/logic-solver.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/boolean-expression-simplifier/dist/bundle.min.js" defer></script>
 </head>
 <body>
 
@@ -38,7 +33,7 @@
     </div>
   </div>
 
-  <!-- ===== Boolean Expression Workspace ===== -->
+  <!-- Boolean Expression Workspace -->
   <div class="expr-container">
     <div class="expr-title">Boolean Expression</div>
 
@@ -60,7 +55,7 @@
     <button id="instructionBtn">Instruction</button>
   </div>
 
-  <!-- ===== Instruction Popup ===== -->
+  <!-- Instruction Popup -->
   <div class="popup-overlay" id="popupOverlay">
     <div class="popup">
       <h3>Instruction</h3>
@@ -68,51 +63,45 @@
     </div>
   </div>
 
-<script>
-/* ===== GIỮ NGUYÊN TOÀN BỘ LOGIC UI ===== */
-const definedByBtn = document.getElementById("definedByBtn");
-const definedByMenu = document.getElementById("definedByMenu");
-const varSelected = document.getElementById("varSelected");
-const varMenu = document.getElementById("varMenu");
-const instructionBtn = document.getElementById("instructionBtn");
-const popupOverlay = document.getElementById("popupOverlay");
-const popup = popupOverlay.querySelector(".popup");
-const instructionContent = document.getElementById("instructionContent");
-const standardExpr = document.getElementById("standardExpr");
-const simplifiedExpr = document.getElementById("simplifiedExpr");
+  <script>
+    const definedByBtn = document.getElementById("definedByBtn");
+    const definedByMenu = document.getElementById("definedByMenu");
+    const varSelected = document.getElementById("varSelected");
+    const varMenu = document.getElementById("varMenu");
+    const instructionBtn = document.getElementById("instructionBtn");
+    const popupOverlay = document.getElementById("popupOverlay");
+    const popup = popupOverlay.querySelector(".popup");
+    const instructionContent = document.getElementById("instructionContent");
+    const standardExpr = document.getElementById("standardExpr");
+    const simplifiedExpr = document.getElementById("simplifiedExpr");
 
-definedByBtn.addEventListener("click", e => {
-  e.stopPropagation();
-  if (varMenu.classList.contains("show")) varMenu.classList.remove("show");
-  definedByMenu.classList.toggle("show");
-});
+    const VARS = ["A", "B", "C", "D", "E", "F"];
+    let variableCount = 4;
 
-varSelected.addEventListener("click", e => {
-  e.stopPropagation();
-  if (definedByMenu.classList.contains("show")) definedByMenu.classList.remove("show");
-  varMenu.classList.toggle("show");
-});
+    // --- Dropdowns ---
+    definedByBtn.addEventListener("click", e => { e.stopPropagation(); varMenu.classList.remove("show"); definedByMenu.classList.toggle("show"); });
+    varSelected.addEventListener("click", e => { e.stopPropagation(); definedByMenu.classList.remove("show"); varMenu.classList.toggle("show"); });
+    definedByMenu.querySelectorAll(".option").forEach(opt => opt.addEventListener("click", () => definedByMenu.classList.remove("show")));
+    varMenu.querySelectorAll(".var-option").forEach(opt => {
+      opt.addEventListener("click", () => {
+        variableCount = parseInt(opt.innerText);
+        varSelected.innerText = opt.innerText + " ▼";
+        varMenu.classList.remove("show");
+        updateInstruction();
+      });
+    });
+    window.addEventListener("click", () => { definedByMenu.classList.remove("show"); varMenu.classList.remove("show"); });
 
-window.addEventListener("click", () => {
-  definedByMenu.classList.remove("show");
-  varMenu.classList.remove("show");
-});
+    // --- Popup ---
+    instructionBtn.addEventListener("click", e => { e.stopPropagation(); popupOverlay.style.display = (popupOverlay.style.display === "block") ? "none" : "block"; });
+    popupOverlay.addEventListener("click", () => { popupOverlay.style.display = "none"; });
+    popup.addEventListener("click", e => e.stopPropagation());
 
-instructionBtn.addEventListener("click", e => {
-  e.stopPropagation();
-  popupOverlay.style.display =
-    popupOverlay.style.display === "block" ? "none" : "block";
-});
-
-popupOverlay.addEventListener("click", () => popupOverlay.style.display = "none");
-popup.addEventListener("click", e => e.stopPropagation());
-
-const VARS = ["A", "B", "C", "D", "E", "F"];
-let variableCount = 4;
-
-function updateInstruction() {
-  instructionContent.textContent = `
-Allowed variables: ${VARS.slice(0, variableCount).join(", ")}
+    // --- Instruction ---
+    function updateInstruction() {
+      const vars = VARS.slice(0, variableCount).join(", ");
+      instructionContent.textContent = `
+Allowed variables: ${vars}
 
 Operators:
 +  : OR
@@ -120,58 +109,58 @@ Operators:
 '  : NOT
 x  : XOR
 ( ) : Group
-  `;
-}
-updateInstruction();
 
-/* ===== CHỈ SỬA PHẦN RÚT GỌN ===== */
-
-// XOR → SOP
-function convertXORtoStandard(expr) {
-  const xorRegex = /([A-Z])x([A-Z])/;
-  while (xorRegex.test(expr)) {
-    expr = expr.replace(xorRegex, "($1'*$2+$1*$2')");
-  }
-  return expr;
-}
-
-// Boolean → logic-solver syntax
-function toLogicSolver(expr) {
-  return expr
-    .replace(/([A-Z])'/g, "!$1")
-    .replace(/\*/g, "&")
-    .replace(/\+/g, "|");
-}
-
-standardExpr.addEventListener("input", () => {
-  const allowedVars = VARS.slice(0, variableCount);
-  const allowedOps = ["+", "*", "'", "x", "(", ")"];
-
-  let cleaned = "";
-  for (let ch of standardExpr.value.toUpperCase()) {
-    if (allowedVars.includes(ch) || allowedOps.includes(ch)) {
-      cleaned += ch;
+Invalid characters will be removed automatically.
+      `;
     }
-  }
-  standardExpr.value = cleaned;
+    updateInstruction();
 
-  if (!cleaned) {
-    simplifiedExpr.value = "";
-    return;
-  }
+    // --- Chuyển XOR sang chuẩn AND/OR ---
+    function convertXORtoStandard(expr) {
+      let newExpr = expr;
+      const xorRegex = /([A-Z]) x ([A-Z])/g;
+      while (xorRegex.test(newExpr)) {
+        newExpr = newExpr.replace(xorRegex, "($1'*$2 + $1*$2')");
+      }
+      return newExpr;
+    }
 
-  try {
-    const noSpace = cleaned.replace(/\s+/g, "");
-    const xorExpanded = convertXORtoStandard(noSpace);
-    const logicExpr = toLogicSolver(xorExpanded);
+    // --- Chuyển sang cú pháp JS ---
+    function convertToJSLogic(expr) {
+      let temp = convertXORtoStandard(expr);
+      temp = temp.replace(/\*/g, "&&");
+      temp = temp.replace(/\+/g, "||");
+      temp = temp.replace(/([A-Z])'/g, "!$1");
+      return temp;
+    }
 
-    const result = Logic.simplify(logicExpr).toString();
-    simplifiedExpr.value = result;
-  } catch {
-    simplifiedExpr.value = "Invalid expression";
-  }
-});
-</script>
+    // --- Chuyển từ JS logic về ký hiệu truyền thống ---
+    function convertFromJSLogic(jsExpr) {
+      let temp = jsExpr;
+      temp = temp.replace(/!([A-Z])/g, "$1'");
+      temp = temp.replace(/&&/g, "*");
+      temp = temp.replace(/\|\|/g, "+");
+      return temp;
+    }
 
+    // --- Xử lý input và simplify ---
+    standardExpr.addEventListener("input", () => {
+      const allowedVars = VARS.slice(0, variableCount);
+      const allowedOps = ["+", "*", "'", "x", "(", ")", " "];
+      let cleaned = "";
+      for (let ch of standardExpr.value) if (allowedVars.includes(ch) || allowedOps.includes(ch)) cleaned += ch;
+      standardExpr.value = cleaned;
+
+      try {
+        const jsExpr = convertToJSLogic(cleaned);             // chuyển sang JS trước
+        const simplifiedJS = BooleanExpressionSimplifier.simplify(jsExpr);
+        simplifiedExpr.value = convertFromJSLogic(simplifiedJS); // chuyển về ký hiệu truyền thống
+      } catch (e) {
+        simplifiedExpr.value = cleaned;
+      }
+    });
+
+  </script>
 </body>
 </html>
+
