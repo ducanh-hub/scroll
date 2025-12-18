@@ -58,8 +58,7 @@
   <div class="popup-overlay" id="popupOverlay">
     <div class="popup">
       <h3>Instruction</h3>
-      <pre id="instructionContent"></pre>
-      <button id="closePopup">Close</button>
+      <button id="instructionBtn">Instruction</button>
     </div>
   </div>
 
@@ -69,6 +68,9 @@
     const definedByMenu = document.getElementById("definedByMenu");
     const varSelected = document.getElementById("varSelected");
     const varMenu = document.getElementById("varMenu");
+    const instructionBtn = document.getElementById("instructionBtn");
+    const popupOverlay = document.getElementById("popupOverlay");
+    const popup = popupOverlay.querySelector(".popup");
 
     definedByBtn.addEventListener("click", (e) => {
       e.stopPropagation();
@@ -102,6 +104,21 @@
     window.addEventListener("click", () => {
       definedByMenu.classList.remove("show");
       varMenu.classList.remove("show");
+    });
+    instructionBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      popupOverlay.style.display =
+        popupOverlay.style.display === "block" ? "none" : "block";
+    });
+    
+    // Click ra ngoài popup → đóng
+    popupOverlay.addEventListener("click", () => {
+      popupOverlay.style.display = "none";
+    });
+    
+    // Click vào popup → KHÔNG đóng
+    popup.addEventListener("click", (e) => {
+      e.stopPropagation();
     });
   </script>
 
