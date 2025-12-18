@@ -163,10 +163,25 @@
         standardExpr.value = cleaned;
       }
     
-      // Simplified tạm thời (chưa tối ưu K-map)
-      simplifiedExpr.value = cleaned.replace(/\s+/g, "");
-    });
+      // Simplified tự động với thư viện
+      try {
+        simplifiedExpr.value = BooleanExpressionSimplifier.simplify(cleaned);
+      } catch (e) {
+        simplifiedExpr.value = cleaned; // nếu lỗi, giữ nguyên
+      }
+      function simplifyBoolean(expr) {
+        // Loại bỏ khoảng trắng
+        let simplified = expr.replace(/\s+/g, "");
+    
+      // TODO: đây là chỗ tích hợp logic simplify nâng cao (K-map, Quine-McCluskey)
+      // Hiện tại tạm thời: giữ nguyên ký tự hợp lệ
+      return simplified;
+    }
+
     updateInstruction();
+    <!-- Thư viện simplify Boolean expression -->
+    <script src="https://cdn.jsdelivr.net/npm/boolean-expression-simplifier/dist/bundle.min.js"></script>
+
   </script>
 
 </body>
