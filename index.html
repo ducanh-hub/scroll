@@ -3,8 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Blank page with scroll</title>
+  <title>Boolean Expression Simplifier</title>
   <link rel="stylesheet" href="style.css" />
+  <!-- Load thư viện simplify trước script chính -->
+  <script src="https://cdn.jsdelivr.net/npm/boolean-expression-simplifier/dist/bundle.min.js" defer></script>
 </head>
 <body>
   
@@ -62,80 +64,66 @@
     </div>
   </div>
 
-  <!-- Thư viện simplify Boolean expression -->
-  <script src="https://cdn.jsdelivr.net/npm/boolean-expression-simplifier/dist/bundle.min.js"></script>
+  <script defer>
+    window.onload = () => {
+      const definedByBtn = document.getElementById("definedByBtn");
+      const definedByMenu = document.getElementById("definedByMenu");
+      const varSelected = document.getElementById("varSelected");
+      const varMenu = document.getElementById("varMenu");
+      const instructionBtn = document.getElementById("instructionBtn");
+      const popupOverlay = document.getElementById("popupOverlay");
+      const popup = popupOverlay.querySelector(".popup");
+      const instructionContent = document.getElementById("instructionContent");
+      const standardExpr = document.getElementById("standardExpr");
+      const simplifiedExpr = document.getElementById("simplifiedExpr");
 
-  <script>
-    const definedByBtn = document.getElementById("definedByBtn");
-    const definedByMenu = document.getElementById("definedByMenu");
-    const varSelected = document.getElementById("varSelected");
-    const varMenu = document.getElementById("varMenu");
-    const instructionBtn = document.getElementById("instructionBtn");
-    const popupOverlay = document.getElementById("popupOverlay");
-    const popup = popupOverlay.querySelector(".popup");
-    const instructionContent = document.getElementById("instructionContent");
-    const standardExpr = document.getElementById("standardExpr");
-    const simplifiedExpr = document.getElementById("simplifiedExpr");
+      const VARS = ["A", "B", "C", "D", "E", "F"];
+      let variableCount = 4;
 
-    definedByBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      if (varMenu.classList.contains("show")) {
-        varMenu.classList.remove("show");
-      }
-      definedByMenu.classList.toggle("show");
-    });
-
-    varSelected.addEventListener("click", (e) => {
-      e.stopPropagation();
-      if (definedByMenu.classList.contains("show")) {
-        definedByMenu.classList.remove("show");
-      }
-      varMenu.classList.toggle("show");
-    });
-
-    definedByMenu.querySelectorAll(".option").forEach(option => {
-      option.addEventListener("click", () => {
-        definedByMenu.classList.remove("show");
+      // ===== Dropdowns =====
+      definedByBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (varMenu.classList.contains("show")) varMenu.classList.remove("show");
+        definedByMenu.classList.toggle("show");
       });
-    });
 
-    varMenu.querySelectorAll(".var-option").forEach(option => {
-      option.addEventListener("click", () => {
-        variableCount = parseInt(option.innerText);
-        varSelected.innerText = option.innerText + " ▼";
-        varMenu.classList.remove("show");
-        updateInstruction(); // CẬP NHẬT INSTRUCTION
+      varSelected.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (definedByMenu.classList.contains("show")) definedByMenu.classList.remove("show");
+        varMenu.classList.toggle("show");
       });
-    });
 
-    window.addEventListener("click", () => {
-      definedByMenu.classList.remove("show");
-      varMenu.classList.remove("show");
-    });
+      definedByMenu.querySelectorAll(".option").forEach(option => {
+        option.addEventListener("click", () => definedByMenu.classList.remove("show"));
+      });
 
-    instructionBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      popupOverlay.style.display =
-        popupOverlay.style.display === "block" ? "none" : "block";
-    });
+      varMenu.querySelectorAll(".var-option").forEach(option => {
+        option.addEventListener("click", () => {
+          variableCount = parseInt(option.innerText);
+          varSelected.innerText = option.innerText + " ▼";
+          varMenu.classList.remove("show");
+          updateInstruction();
+        });
+      });
 
-    // Click ra ngoài popup → đóng
-    popupOverlay.addEventListener("click", () => {
-      popupOverlay.style.display = "none";
-    });
+      window.addEventListener("click", () => {
+        definedByMenu.classList.remove("show");
+        varMenu.classList.remove("show");
+      });
 
-    // Click vào popup → KHÔNG đóng
-    popup.addEventListener("click", (e) => {
-      e.stopPropagation();
-    });
+      // ===== Instruction popup =====
+      instructionBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        popupOverlay.style.display = popupOverlay.style.display === "block" ? "none" : "block";
+      });
 
-    const VARS = ["A", "B", "C", "D", "E", "F"];
-    let variableCount = 4;
+      popupOverlay.addEventListener("click", () => popupOverlay.style.display = "none");
+      popup.addEventListener("click", (e) => e.stopPropagation());
 
-    function updateInstruction() {
-      const vars = VARS.slice(0, variableCount).join(", ");
-    
-      instructionContent.textContent = `
+      // ===== Instruction content =====
+      function updateInstruction() {
+        const vars = VARS.slice(0, variableCount).join(", ");
+        instructionContent.textContent = `
 Allowed variables: ${vars}
 
 Operators:
@@ -146,47 +134,45 @@ x  : XOR
 ( ) : Group
 
 Invalid characters will be removed automatically.
-      `;
-    }
-
-    // Chuyển XOR (x) thành biểu thức chuẩn để thư viện simplify hiểu
-    function convertXORtoStandard(expr) {
-      let newExpr = expr;
-      const xorRegex = /([A-Z]) x ([A-Z])/g;
-      while (xorRegex.test(newExpr)) {
-        newExpr = newExpr.replace(xorRegex, "($1'*$2 + $1*$2')");
+        `;
       }
-      return newExpr;
-    }
 
-    standardExpr.addEventListener("input", () => {
-      const allowedVars = VARS.slice(0, variableCount);
-      const allowedOps = ["+", "*", "'", "x", "(", ")", " "];
-
-      let cleaned = "";
-      for (let ch of standardExpr.value) {
-        if (allowedVars.includes(ch)) {
-          cleaned += ch;
-        } else if (allowedOps.includes(ch)) {
-          cleaned += ch;
+      // ===== Xử lý XOR và rút gọn =====
+      function convertXORtoStandard(expr) {
+        let newExpr = expr;
+        const xorRegex = /([A-Z]) x ([A-Z])/;
+        while (xorRegex.test(newExpr)) {
+          newExpr = newExpr.replace(xorRegex, "($1'*$2 + $1*$2')");
         }
+        return newExpr;
       }
 
-      if (cleaned !== standardExpr.value) {
-        standardExpr.value = cleaned;
-      }
+      standardExpr.addEventListener("input", () => {
+        const allowedVars = VARS.slice(0, variableCount);
+        const allowedOps = ["+", "*", "'", "x", "(", ")", " "];
 
-      // Simplified tự động với thư viện, đã xử lý XOR
-      try {
-        const standardExprConverted = convertXORtoStandard(cleaned);
-        simplifiedExpr.value = BooleanExpressionSimplifier.simplify(standardExprConverted);
-      } catch (e) {
-        simplifiedExpr.value = cleaned; // nếu lỗi, giữ nguyên
-      }
-    });
+        // Loại ký tự không hợp lệ
+        let cleaned = "";
+        for (let ch of standardExpr.value) {
+          if (allowedVars.includes(ch) || allowedOps.includes(ch)) cleaned += ch;
+        }
+        if (cleaned !== standardExpr.value) standardExpr.value = cleaned;
 
-    updateInstruction();
+        // Loại bỏ khoảng trắng
+        const cleanedExpr = cleaned.replace(/\s+/g, '');
+        // Chuyển XOR
+        const standardExprConverted = convertXORtoStandard(cleanedExpr);
+
+        // Rút gọn với thư viện
+        try {
+          simplifiedExpr.value = BooleanExpressionSimplifier.simplify(standardExprConverted);
+        } catch (e) {
+          simplifiedExpr.value = cleaned; // nếu lỗi
+        }
+      });
+
+      updateInstruction();
+    }
   </script>
-
 </body>
 </html>
