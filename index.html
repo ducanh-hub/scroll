@@ -64,115 +64,131 @@
     </div>
   </div>
 
-  <script defer>
-    window.onload = () => {
-      const definedByBtn = document.getElementById("definedByBtn");
-      const definedByMenu = document.getElementById("definedByMenu");
-      const varSelected = document.getElementById("varSelected");
-      const varMenu = document.getElementById("varMenu");
-      const instructionBtn = document.getElementById("instructionBtn");
-      const popupOverlay = document.getElementById("popupOverlay");
-      const popup = popupOverlay.querySelector(".popup");
-      const instructionContent = document.getElementById("instructionContent");
-      const standardExpr = document.getElementById("standardExpr");
-      const simplifiedExpr = document.getElementById("simplifiedExpr");
-
-      const VARS = ["A", "B", "C", "D", "E", "F"];
-      let variableCount = 4;
-
-      // ===== Dropdowns =====
-      definedByBtn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        if (varMenu.classList.contains("show")) varMenu.classList.remove("show");
-        definedByMenu.classList.toggle("show");
-      });
-
-      varSelected.addEventListener("click", (e) => {
-        e.stopPropagation();
-        if (definedByMenu.classList.contains("show")) definedByMenu.classList.remove("show");
-        varMenu.classList.toggle("show");
-      });
-
-      definedByMenu.querySelectorAll(".option").forEach(option => {
-        option.addEventListener("click", () => definedByMenu.classList.remove("show"));
-      });
-
-      varMenu.querySelectorAll(".var-option").forEach(option => {
-        option.addEventListener("click", () => {
-          variableCount = parseInt(option.innerText);
-          varSelected.innerText = option.innerText + " ▼";
-          varMenu.classList.remove("show");
-          updateInstruction();
-        });
-      });
-
-      window.addEventListener("click", () => {
-        definedByMenu.classList.remove("show");
-        varMenu.classList.remove("show");
-      });
-
-      // ===== Instruction popup =====
-      instructionBtn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        popupOverlay.style.display = popupOverlay.style.display === "block" ? "none" : "block";
-      });
-
-      popupOverlay.addEventListener("click", () => popupOverlay.style.display = "none");
-      popup.addEventListener("click", (e) => e.stopPropagation());
-
-      // ===== Instruction content =====
-      function updateInstruction() {
-        const vars = VARS.slice(0, variableCount).join(", ");
-        instructionContent.textContent = `
-Allowed variables: ${vars}
-
-Operators:
-+  : OR
-*  : AND
-'  : NOT
-x  : XOR
-( ) : Group
-
-Invalid characters will be removed automatically.
-        `;
-      }
-
-      // ===== Xử lý XOR và rút gọn =====
-      function convertXORtoStandard(expr) {
-        let newExpr = expr;
-        const xorRegex = /([A-Z]) x ([A-Z])/;
-        while (xorRegex.test(newExpr)) {
-          newExpr = newExpr.replace(xorRegex, "($1'*$2 + $1*$2')");
-        }
-        return newExpr;
-      }
-
-      standardExpr.addEventListener("input", () => {
-        const allowedVars = VARS.slice(0, variableCount);
-        const allowedOps = ["+", "*", "'", "x", "(", ")", " "];
-
-        // Loại ký tự không hợp lệ
-        let cleaned = "";
-        for (let ch of standardExpr.value) {
-          if (allowedVars.includes(ch) || allowedOps.includes(ch)) cleaned += ch;
-        }
-        if (cleaned !== standardExpr.value) standardExpr.value = cleaned;
-
-        // Loại bỏ khoảng trắng
-        const cleanedExpr = cleaned.replace(/\s+/g, '');
-        // Chuyển XOR
-        const standardExprConverted = convertXORtoStandard(cleanedExpr);
-
-        // Rút gọn với thư viện
-        try {
-          simplifiedExpr.value = BooleanExpressionSimplifier.simplify(standardExprConverted);
-        } catch (e) {
-          simplifiedExpr.value = cleaned; // nếu lỗi
-        }
-      });
-
+  <script>
+  const definedByBtn = document.getElementById("definedByBtn");
+  const definedByMenu = document.getElementById("definedByMenu");
+  const varSelected = document.getElementById("varSelected");
+  const varMenu = document.getElementById("varMenu");
+  const instructionBtn = document.getElementById("instructionBtn");
+  const popupOverlay = document.getElementById("popupOverlay");
+  const popup = popupOverlay.querySelector(".popup");
+  const instructionContent = document.getElementById("instructionContent");
+  const standardExpr = document.getElementById("standardExpr");
+  const simplifiedExpr = document.getElementById("simplifiedExpr");
+  
+  definedByBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    if (varMenu.classList.contains("show")) varMenu.classList.remove("show");
+    definedByMenu.classList.toggle("show");
+  });
+  
+  varSelected.addEventListener("click", (e) => {
+    e.stopPropagation();
+    if (definedByMenu.classList.contains("show")) definedByMenu.classList.remove("show");
+    varMenu.classList.toggle("show");
+  });
+  
+  definedByMenu.querySelectorAll(".option").forEach(option => {
+    option.addEventListener("click", () => {
+      definedByMenu.classList.remove("show");
+    });
+  });
+  
+  varMenu.querySelectorAll(".var-option").forEach(option => {
+    option.addEventListener("click", () => {
+      variableCount = parseInt(option.innerText);
+      varSelected.innerText = option.innerText + " ▼";
+      varMenu.classList.remove("show");
       updateInstruction();
+    });
+  });
+  
+  window.addEventListener("click", () => {
+    definedByMenu.classList.remove("show");
+    varMenu.classList.remove("show");
+  });
+  
+  instructionBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    popupOverlay.style.display =
+      popupOverlay.style.display === "block" ? "none" : "block";
+  });
+  
+  popupOverlay.addEventListener("click", () => {
+    popupOverlay.style.display = "none";
+  });
+  
+  popup.addEventListener("click", (e) => e.stopPropagation());
+  
+  const VARS = ["A", "B", "C", "D", "E", "F"];
+  let variableCount = 4;
+  
+  function updateInstruction() {
+    const vars = VARS.slice(0, variableCount).join(", ");
+    instructionContent.textContent = `
+  Allowed variables: ${vars}
+  
+  Operators:
+  +  : OR
+  *  : AND
+  '  : NOT
+  x  : XOR
+  ( ) : Group
+  
+  Invalid characters will be removed automatically.
+    `;
+  }
+  
+  // Chuyển XOR (x) sang biểu thức chuẩn
+  function convertXORtoStandard(expr) {
+    let newExpr = expr;
+    const xorRegex = /([A-Z]) x ([A-Z])/g;
+    while (xorRegex.test(newExpr)) {
+      newExpr = newExpr.replace(xorRegex, "($1'*$2 + $1*$2')");
     }
+    return newExpr;
+  }
+  
+  // Chuyển sang cú pháp JS để thư viện hiểu
+  function convertToJSLogic(expr) {
+    // 1. Xử lý XOR trước
+    let temp = convertXORtoStandard(expr);
+  
+    // 2. Thay dấu AND, OR, NOT sang JS
+    temp = temp.replace(/\*/g, "&&");
+    temp = temp.replace(/\+/g, "||");
+    // Đảo dấu ' (NOT) → !V
+    temp = temp.replace(/([A-Z])'/g, "!$1");
+  
+    return temp;
+  }
+  
+  standardExpr.addEventListener("input", () => {
+    const allowedVars = VARS.slice(0, variableCount);
+    const allowedOps = ["+", "*", "'", "x", "(", ")", " "];
+  
+    // Loại bỏ ký tự không hợp lệ
+    let cleaned = "";
+    for (let ch of standardExpr.value) {
+      if (allowedVars.includes(ch)) {
+        cleaned += ch;
+      } else if (allowedOps.includes(ch)) {
+        cleaned += ch;
+      }
+    }
+    if (cleaned !== standardExpr.value) standardExpr.value = cleaned;
+  
+    // Simplify với BooleanExpressionSimplifier
+    try {
+      const jsExpr = convertToJSLogic(cleaned);
+      simplifiedExpr.value = BooleanExpressionSimplifier.simplify(jsExpr);
+    } catch (e) {
+      simplifiedExpr.value = cleaned;
+    }
+  });
+  
+  updateInstruction();
   </script>
+
 </body>
 </html>
