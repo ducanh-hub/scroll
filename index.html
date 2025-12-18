@@ -31,6 +31,38 @@
       <div class="var-option">6 variables</div>
     </div>
   </div>
+  <!-- ===== Boolean Expression Workspace ===== -->
+  <div class="expr-container">
+  
+    <div class="expr-title">Boolean Expression</div>
+  
+    <div class="expr-row">
+      <label>Standard expression:</label>
+      <input type="text" id="standardExpr" autocomplete="off" />
+    </div>
+  
+    <div class="expr-row">
+      <label>Don't care terms:</label>
+      <input type="text" id="dontCareExpr" autocomplete="off" />
+    </div>
+  
+    <div class="expr-row">
+      <label>Simplified expression:</label>
+      <input type="text" id="simplifiedExpr" disabled />
+    </div>
+  
+    <button id="instructionBtn">Instruction</button>
+  </div>
+  
+  <!-- ===== Instruction Popup ===== -->
+  <div class="popup-overlay" id="popupOverlay">
+    <div class="popup">
+      <h3>Instruction</h3>
+      <pre id="instructionContent"></pre>
+      <button id="closePopup">Close</button>
+    </div>
+  </div>
+
 
   <script>
     const definedByBtn = document.getElementById("definedByBtn");
