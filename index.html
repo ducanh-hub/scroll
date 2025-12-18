@@ -58,7 +58,7 @@
   <div class="popup-overlay" id="popupOverlay">
     <div class="popup">
       <h3>Instruction</h3>
-      <button id="instructionBtn">Instruction</button>
+      <button id="instructionBtn"></pre>
     </div>
   </div>
 
@@ -71,6 +71,9 @@
     const instructionBtn = document.getElementById("instructionBtn");
     const popupOverlay = document.getElementById("popupOverlay");
     const popup = popupOverlay.querySelector(".popup");
+    const instructionContent = document.getElementById("instructionContent");
+    const standardExpr = document.getElementById("standardExpr");
+    const simplifiedExpr = document.getElementById("simplifiedExpr");
 
     definedByBtn.addEventListener("click", (e) => {
       e.stopPropagation();
@@ -96,8 +99,10 @@
 
     varMenu.querySelectorAll(".var-option").forEach(option => {
       option.addEventListener("click", () => {
+        variableCount = parseInt(option.innerText);
         varSelected.innerText = option.innerText + " ▼";
         varMenu.classList.remove("show");
+        updateInstruction(); // 👈 CẬP NHẬT INSTRUCTION
       });
     });
 
@@ -120,6 +125,48 @@
     popup.addEventListener("click", (e) => {
       e.stopPropagation();
     });
+    const VARS = ["A", "B", "C", "D", "E", "F"];
+    let variableCount = 4;
+    
+    function updateInstruction() {
+      const vars = VARS.slice(0, variableCount).join(", ");
+    
+      instructionContent.textContent = `
+    Allowed variables: ${vars}
+    
+    Operators:
+    +  : OR
+    *  : AND
+    '  : NOT
+    x  : XOR
+    ( ) : Group
+    
+    Invalid characters will be removed automatically.
+    `;
+    }
+    
+    standardExpr.addEventListener("input", () => {
+      const allowedVars = VARS.slice(0, variableCount);
+      const allowedOps = ["+", "*", "'", "x", "(", ")", " "];
+    
+      let cleaned = "";
+    
+      for (let ch of standardExpr.value) {
+        if (allowedVars.includes(ch)) {
+          cleaned += ch;
+        } else if (allowedOps.includes(ch)) {
+          cleaned += ch;
+        }
+      }
+    
+      if (cleaned !== standardExpr.value) {
+        standardExpr.value = cleaned;
+      }
+    
+      // Simplified tạm thời (chưa tối ưu K-map)
+      simplifiedExpr.value = cleaned.replace(/\s+/g, "");
+    });
+
   </script>
 
 </body>
